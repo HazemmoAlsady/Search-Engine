@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Search Engine | TF-IDF Ranked Retrieval</title>
+    <meta name="description"
+        content="Advanced document search engine using TF-IDF and cosine similarity with Arabic and English support">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Search</h1>
+        </header>
+
+        <main>
+            <form method="POST" action="/" class="search-form" autocomplete="off">
+                <div class="search-box">
+                    <svg class="search-input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input type="text" name="query" id="query"
+                        placeholder="Search for documents... | ابحث عن المستندات..." value="{{ query }}" autofocus
+                        required aria-label="Search query">
+                    <button type="submit" class="search-btn">
+                        <span>Search</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            </form>
+
+            {% if query %}
+            <div class="results-section">
+                {% if results %}
+                <div class="results-header">
+                    <div class="results-stats">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M9 11l3 3L22 4"></path>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        </svg>
+                        <p>
+                            Found <strong class="highlight">{{ results|length }}</strong>
+                            relevant document{{ 's' if results|length != 1 else '' }} for
+                            <strong class="query-highlight">"{{ query }}"</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="results-list">
+                    {% for result in results %}
+                    {% set percentage = (result.score * 100)|round|int %}
+                    {% if percentage >= 80 %}
+                    {% set relevance_class = "excellent" %}
+                    {% elif percentage >= 60 %}
+                    {% set relevance_class = "very-good" %}
+                    {% elif percentage >= 40 %}
+                    {% set relevance_class = "good" %}
+                    {% elif percentage >= 20 %}
+                    {% set relevance_class = "fair" %}
+                    {% else %}
+                    {% set relevance_class = "weak" %}
+                    {% endif %}
+
+                    <article class="result-item {{ relevance_class }}" data-index="{{ result.index }}">
+                        <div class="result-header">
+                            <div class="result-meta">
+                                <span class="result-number">{{ loop.index }}</span>
+                                <span class="result-label">Document #{{ result.index + 1 }}</span>
+                            </div>
+                            <div class="score-display">
+                                <span class="percentage-large">{{ percentage }}%</span>
+                            </div>
+                        </div>
+
+                        <p class="result-text">{{ result.text }}</p>
+
+                        <div class="result-footer">
+                            <div class="visual-score-bar">
+                                <div class="score-fill" style="width: {{ percentage }}%"></div>
+                            </div>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="no-results">
+                    <svg class="no-results-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                        <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                    <h3>No Results Found</h3>
+                    <p>No documents found matching <strong>"{{ query }}"</strong></p>
+                    <p class="help-text">Try using different keywords or check your spelling</p>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </main>
+    </div>
+</body>
+
+</html>

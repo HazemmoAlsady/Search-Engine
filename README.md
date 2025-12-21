@@ -1,40 +1,39 @@
-# Ranked Search Engine (Information Retrieval Project)
+# Multilingual Ranked Search Engine (TXT & PDF)
 
-This project implements a **mini ranked search engine** based on core
-Information Retrieval concepts studied in the course.
+This project implements a **mini search engine** based on core
+**Information Retrieval (IR)** concepts.  
+The system supports **file-based document ingestion**, **ranked retrieval**, 
+and works with **both Arabic and English documents**.
 
-The system supports:
-- Document ingestion
-- Text preprocessing
-- Ranked retrieval using TF-IDF
-- Cosine similarity for scoring documents
-
-The project is implemented and executed using **Google Colab**.
+The search engine is implemented using **Python** and executed on **Google Colab**.
 
 ---
 
 ## 📚 Concepts Covered
 
-This project applies concepts from the following lectures:
+This project applies concepts from the Information Retrieval course:
 
-- **Lecture 3**: Tokenization, Stopwords, Lemmatization
-- **Lecture 4**: Dictionary and indexing concepts
-- **Lecture 5**: Ranked Retrieval, TF-IDF, Vector Space Model
+- **Lecture 3** – Tokenization, Stopwords, Lemmatization
+- **Lecture 4** – Dictionary and Indexing Concepts
+- **Lecture 5** – Ranked Retrieval, TF-IDF, Vector Space Model
 
 ---
 
 ## ⚙️ Features
 
+- Supports **TXT and PDF documents**
+- Accepts **multiple files with any filename**
+- Works with **Arabic and English text**
 - Text preprocessing:
-  - Lowercasing
   - Tokenization
   - Stopword removal
-  - Lemmatization
+  - Lemmatization (English)
+  - Normalization (Arabic)
 - TF (Term Frequency) computation
 - IDF (Inverse Document Frequency) computation
 - TF-IDF vector representation
 - Ranked retrieval using **Cosine Similarity**
-- Interactive search interface (query input loop)
+- Interactive, web-like search interface
 
 ---
 
@@ -42,13 +41,15 @@ This project applies concepts from the following lectures:
 
 - Python
 - NLTK
+- PyPDF2
 - Google Colab
 
 ---
 
 ## 📥 Input
 
-### Documents
-The system accepts documents dynamically from the user via input.
+### Document Collection
+- Users can upload **TXT and/or PDF files**
+- Each line (TXT) or paragraph (PDF) is treated as a separate document
 
-Example:
+Example TXT file:

@@ -61,7 +61,8 @@
 
                 <div class="results-list">
                     {% for result in results %}
-                    {% set percentage = (result.score * 100)|round|int %}
+                    {% set score_value = result.score|float %}
+                    {% set percentage = (score_value * 100)|round|int %}
                     {% if percentage >= 80 %}
                     {% set relevance_class = "excellent" %}
                     {% elif percentage >= 60 %}
@@ -74,23 +75,35 @@
                     {% set relevance_class = "weak" %}
                     {% endif %}
 
-                    <article class="result-item {{ relevance_class }}" data-index="{{ result.index }}">
+                    <article class="result-item {{ relevance_class }}" data-doc-id="{{ result.doc_id }}">
                         <div class="result-header">
                             <div class="result-meta">
                                 <span class="result-number">{{ loop.index }}</span>
-                                <span class="result-label">Document #{{ result.index + 1 }}</span>
+                                <span class="result-label">Document #{{ result.doc_id }}</span>
                             </div>
                             <div class="score-display">
-                                <span class="percentage-large">{{ percentage }}%</span>
+                                <span class="score-badge">{{ percentage }}%</span>
+                                <span class="score-value">Score: {{ result.score }}</span>
                             </div>
                         </div>
 
-                        <p class="result-text">{{ result.text }}</p>
+                        <div class="result-content">
+                            <p class="result-description">Gutenberg Book Collection</p>
+                            <a href="{{ result.link }}" target="_blank" class="result-link" title="Open in Gutenberg">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
+                                View Document
+                            </a>
+                        </div>
 
                         <div class="result-footer">
                             <div class="visual-score-bar">
-                                <div class="score-fill" style="width: {{ percentage }}%"></div>
+                                <div class="score-fill {{ relevance_class }}" style="width: {{ percentage }}%"></div>
                             </div>
+                            <span class="result-rank">Rank: #{{ loop.index }}</span>
                         </div>
                     </article>
                     {% endfor %}

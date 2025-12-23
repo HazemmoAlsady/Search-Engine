@@ -29,7 +29,7 @@
                         <path d="m21 21-4.35-4.35"></path>
                     </svg>
                     <input type="text" name="query" id="query" placeholder="Search for documents... "
-                        value="{{ query }}" autofocus required aria-label="Search query">
+                        value="{{ query if query else '' }}" autofocus required aria-label="Search query">
                     <button type="submit" class="search-btn">
                         <span>Search</span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
